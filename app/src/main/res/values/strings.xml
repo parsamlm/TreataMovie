@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Treata Movie</string>
+    <string name="tab_text_1">Content</string>
+    <string name="tab_text_2">Favorite</string>
+    <string name="add_to_favorite">اضافه کردن به لیست علاقه مندی</string>
+    <string name="more_details">جزئیات بیشتر</string>
+</resources>
