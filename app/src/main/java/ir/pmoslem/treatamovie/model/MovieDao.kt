@@ -9,9 +9,6 @@ interface MovieDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertMoviesData(moviesList: List<Movie>)
 
-    @Query("SELECT * FROM movies")
-    fun getAllMovies(): LiveData<List<Movie>>
-
     @Query("SELECT * FROM movies WHERE favoriteStatus = 1")
     fun getFavoriteMovies(): LiveData<List<Movie>>
 

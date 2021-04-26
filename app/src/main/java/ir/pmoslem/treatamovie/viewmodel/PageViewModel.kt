@@ -3,6 +3,9 @@ package ir.pmoslem.treatamovie.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.pmoslem.treatamovie.model.Movie
 import ir.pmoslem.treatamovie.model.repository.ContentRepository
@@ -14,11 +17,9 @@ class PageViewModel @Inject constructor(private val contentRepository: ContentRe
 
     private val _index = MutableLiveData<Int>()
 
-    init {
-        contentRepository.getContentListFromServer()
+    fun getContentListFromServer(): LiveData<PagingData<Movie>>{
+        return contentRepository.getContentListFromServer().cachedIn(viewModelScope)
     }
-
-    fun getContentListFromDatabase():LiveData<List<Movie>> = contentRepository.getContentListFromDatabase()
 
     fun getFavoriteContentListFromDatabase():LiveData<List<Movie>> = contentRepository.getFavoriteContentListFromDatabase()
 

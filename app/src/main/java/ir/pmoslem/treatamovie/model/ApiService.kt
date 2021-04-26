@@ -8,7 +8,7 @@ import retrofit2.http.POST
 interface ApiService {
 
     @POST("GetContentList")
-    suspend fun getContentList(@Body body: JsonObject):Response<ResultObject>
+    suspend fun getContentList(@Body body: JsonObject): ResultObject
 
     @POST("GetContent")
     suspend fun getContentDetail(@Body body: JsonObject)

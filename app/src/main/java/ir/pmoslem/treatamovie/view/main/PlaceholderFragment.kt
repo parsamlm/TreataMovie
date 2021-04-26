@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.map
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
@@ -14,13 +14,18 @@ import ir.pmoslem.treatamovie.databinding.FragmentMainBinding
 import ir.pmoslem.treatamovie.model.Movie
 import ir.pmoslem.treatamovie.viewmodel.PageViewModel
 
+private const val FAVORITE_PAGE_INDEX = 1
+
 @AndroidEntryPoint
 class PlaceholderFragment : Fragment(), ItemChangeListener {
 
     private lateinit var pageViewModel: PageViewModel
     private lateinit var viewBinding: FragmentMainBinding
 
-    private lateinit var moviesAdapter: MoviesAdapter
+    private lateinit var contentMoviesAdapter: ContentMoviesAdapter
+    private lateinit var favoriteMoviesAdapter: FavoriteMoviesAdapter
+    private lateinit var favoriteMovieList: List<Movie>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,8 +36,14 @@ class PlaceholderFragment : Fragment(), ItemChangeListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         viewBinding = FragmentMainBinding.inflate(inflater, container, false)
+
         val root = viewBinding.root
-        moviesAdapter = MoviesAdapter(root.context)
+        contentMoviesAdapter = ContentMoviesAdapter(this)
+        favoriteMoviesAdapter = FavoriteMoviesAdapter()
+
+        viewBinding.rvMain.layoutManager = LinearLayoutManager(root.context, RecyclerView.VERTICAL, false)
+
+
 
         pageViewModel.getProgressBarStatus().observe(requireActivity(),
             { visibility ->
@@ -45,26 +56,22 @@ class PlaceholderFragment : Fragment(), ItemChangeListener {
                 }
             })
 
-        pageViewModel.getPageNumber().observe(requireActivity(), Observer { num ->
-            if (num == 1) {
+        pageViewModel.getPageNumber().observe(viewLifecycleOwner, { num ->
+            if (num == FAVORITE_PAGE_INDEX) {
                 pageViewModel.getFavoriteContentListFromDatabase().observe(requireActivity(),
                         { moviesList ->
                             if (moviesList != null) {
-                                moviesAdapter.setMovies(this, moviesList)
+                                favoriteMovieList = moviesList
+                                favoriteMoviesAdapter.setMovies(this, moviesList)
+                                viewBinding.rvMain.adapter = favoriteMoviesAdapter
                             }
-                            viewBinding.rvMain.layoutManager = LinearLayoutManager(root.context, RecyclerView.VERTICAL, false)
-                            viewBinding.rvMain.adapter = moviesAdapter
                         })
 
             }else{
-                pageViewModel.getContentListFromDatabase().observe(requireActivity(),
-                        { moviesList ->
-                            if (moviesList != null) {
-                                moviesAdapter.setMovies(this, moviesList)
-                            }
-                            viewBinding.rvMain.layoutManager = LinearLayoutManager(root.context, RecyclerView.VERTICAL, false)
-                            viewBinding.rvMain.adapter = moviesAdapter
-                        })
+                pageViewModel.getContentListFromServer().observe(viewLifecycleOwner){
+                    contentMoviesAdapter.submitData(viewLifecycleOwner.lifecycle, it)
+                    viewBinding.rvMain.adapter = contentMoviesAdapter
+                }
             }
         })
 
@@ -98,4 +105,5 @@ class PlaceholderFragment : Fragment(), ItemChangeListener {
     override fun onDetailButtonClicked(movie: Movie) {
 
     }
+
 }

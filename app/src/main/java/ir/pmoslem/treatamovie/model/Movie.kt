@@ -23,7 +23,6 @@ data class Movie(
     var favoriteStatus: Boolean
 )
 
-
 data class ResultObject(
     @SerializedName("Result")
     val moviesList: MovieObject
@@ -31,5 +30,5 @@ data class ResultObject(
 
 data class MovieObject(
     @SerializedName("GetContentList")
-    val moviesList: List<Movie>?
+    val moviesList: List<Movie>
 )
