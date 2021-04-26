@@ -4,7 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import ir.pmoslem.treatamovie.model.ApiService
+import ir.pmoslem.treatamovie.model.server.ApiService
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import retrofit2.Retrofit

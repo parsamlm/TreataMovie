@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="ir.pmoslem.treatamovie.view.main.MainFragment"
+        android:label="MainFragment"
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_mainFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="ir.pmoslem.treatamovie.view.details.DetailsFragment"
+        android:label="details_fragment"
+        tools:layout="@layout/details_fragment" >
+        <argument
+            android:name="movie"
+            app:argType="ir.pmoslem.treatamovie.model.db.Movie" />
+        <action
+            android:id="@+id/action_detailsFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+</navigation>

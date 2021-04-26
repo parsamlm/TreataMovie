@@ -1,17 +1,24 @@
-package ir.pmoslem.treatamovie.view.main
+package ir.pmoslem.treatamovie.view.contentfavorite
 
 import android.os.Bundle
+import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.map
+import androidx.navigation.fragment.findNavController
+import androidx.paging.map
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
-import ir.pmoslem.treatamovie.databinding.FragmentMainBinding
-import ir.pmoslem.treatamovie.model.Movie
+import ir.pmoslem.treatamovie.R
+import ir.pmoslem.treatamovie.databinding.FragmentContentFavoriteBinding
+import ir.pmoslem.treatamovie.model.db.Movie
+import ir.pmoslem.treatamovie.view.details.DetailsFragment
+import ir.pmoslem.treatamovie.view.details.DetailsFragmentDirections
+import ir.pmoslem.treatamovie.view.main.MainFragmentDirections
 import ir.pmoslem.treatamovie.viewmodel.PageViewModel
 
 private const val FAVORITE_PAGE_INDEX = 1
@@ -20,11 +27,12 @@ private const val FAVORITE_PAGE_INDEX = 1
 class PlaceholderFragment : Fragment(), ItemChangeListener {
 
     private lateinit var pageViewModel: PageViewModel
-    private lateinit var viewBinding: FragmentMainBinding
+    private lateinit var viewBinding: FragmentContentFavoriteBinding
 
     private lateinit var contentMoviesAdapter: ContentMoviesAdapter
     private lateinit var favoriteMoviesAdapter: FavoriteMoviesAdapter
     private lateinit var favoriteMovieList: List<Movie>
+    private lateinit var fragmentTransaction: FragmentTransaction
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +43,9 @@ class PlaceholderFragment : Fragment(), ItemChangeListener {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        viewBinding = FragmentMainBinding.inflate(inflater, container, false)
+        viewBinding = FragmentContentFavoriteBinding.inflate(inflater, container, false)
+
+        fragmentTransaction = childFragmentManager.beginTransaction()
 
         val root = viewBinding.root
         contentMoviesAdapter = ContentMoviesAdapter(this)
@@ -69,6 +79,7 @@ class PlaceholderFragment : Fragment(), ItemChangeListener {
 
             }else{
                 pageViewModel.getContentListFromServer().observe(viewLifecycleOwner){
+                    it.map { movie -> if(favoriteMovieList[favoriteMovieList.indexOf(movie)].favoriteStatus) movie.favoriteStatus = true  }
                     contentMoviesAdapter.submitData(viewLifecycleOwner.lifecycle, it)
                     viewBinding.rvMain.adapter = contentMoviesAdapter
                 }
@@ -102,8 +113,8 @@ class PlaceholderFragment : Fragment(), ItemChangeListener {
 
     }
 
-    override fun onDetailButtonClicked(movie: Movie) {
-
+    override fun onDetailsButtonClicked(movie: Movie) {
+        findNavController().navigate(MainFragmentDirections.actionMainFragmentToDetailsFragment(movie))
     }
 
 }

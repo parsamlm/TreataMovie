@@ -5,7 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.liveData
-import ir.pmoslem.treatamovie.model.*
+import ir.pmoslem.treatamovie.model.db.Movie
+import ir.pmoslem.treatamovie.model.db.MovieDao
+import ir.pmoslem.treatamovie.model.server.ApiService
+import ir.pmoslem.treatamovie.model.server.MoviePagingSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -26,7 +29,7 @@ class ContentRepository @Inject constructor(private val api: ApiService, private
                 maxSize = 30,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = {MoviePagingSource(api, movieDao)}
+            pagingSourceFactory = { MoviePagingSource(api, movieDao) }
         ).liveData.also { progressBarStatus.postValue(false) }
 
 

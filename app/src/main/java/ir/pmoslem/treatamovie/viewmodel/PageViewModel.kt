@@ -7,10 +7,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ir.pmoslem.treatamovie.model.Movie
+import ir.pmoslem.treatamovie.model.db.Movie
 import ir.pmoslem.treatamovie.model.repository.ContentRepository
 import javax.inject.Inject
-import kotlin.coroutines.coroutineContext
 
 @HiltViewModel
 class PageViewModel @Inject constructor(private val contentRepository: ContentRepository)  : ViewModel() {

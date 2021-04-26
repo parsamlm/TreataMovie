@@ -1,9 +1,11 @@
-package ir.pmoslem.treatamovie.model
+package ir.pmoslem.treatamovie.model.server
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.google.gson.JsonNull
 import com.google.gson.JsonObject
+import ir.pmoslem.treatamovie.model.db.Movie
+import ir.pmoslem.treatamovie.model.db.MovieDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

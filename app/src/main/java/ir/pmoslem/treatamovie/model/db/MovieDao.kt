@@ -1,4 +1,4 @@
-package ir.pmoslem.treatamovie.model
+package ir.pmoslem.treatamovie.model.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.*

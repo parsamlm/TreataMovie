@@ -1,4 +1,4 @@
-package ir.pmoslem.treatamovie
+package ir.pmoslem.treatamovie.application
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

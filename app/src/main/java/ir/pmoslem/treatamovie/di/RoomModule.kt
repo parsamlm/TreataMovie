@@ -7,8 +7,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import ir.pmoslem.treatamovie.model.AppDatabase
-import ir.pmoslem.treatamovie.model.MovieDao
+import ir.pmoslem.treatamovie.model.db.AppDatabase
+import ir.pmoslem.treatamovie.model.db.MovieDao
 import javax.inject.Singleton
 
 @Module

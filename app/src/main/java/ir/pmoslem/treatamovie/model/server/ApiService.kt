@@ -1,7 +1,7 @@
-package ir.pmoslem.treatamovie.model
+package ir.pmoslem.treatamovie.model.server
 
 import com.google.gson.JsonObject
-import retrofit2.Response
+import ir.pmoslem.treatamovie.model.db.ResultObject
 import retrofit2.http.Body
 import retrofit2.http.POST
 

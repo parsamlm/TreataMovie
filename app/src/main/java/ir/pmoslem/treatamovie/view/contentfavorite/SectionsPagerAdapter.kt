@@ -1,4 +1,4 @@
-package ir.pmoslem.treatamovie.view.main
+package ir.pmoslem.treatamovie.view.contentfavorite
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
