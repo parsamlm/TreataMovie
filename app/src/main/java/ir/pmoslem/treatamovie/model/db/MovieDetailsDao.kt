@@ -8,6 +8,6 @@ import androidx.room.OnConflictStrategy
 interface MovieDetailsDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertMovieDetailsContent(movie: Movie)
+    fun insertMovieDetailsContent(movieDetails: MovieDetails)
 
 }

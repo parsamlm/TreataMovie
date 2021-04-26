@@ -29,7 +29,7 @@ class MainFragment : Fragment() {
         val tabs: TabLayout = root.findViewById(R.id.tabs)
         val tabLayoutMediator = TabLayoutMediator(tabs, viewPager2) { tab, position ->
             when (position) {
-                0 -> tab.setText(R.string.tab_text_1, )
+                0 -> tab.setText(R.string.tab_text_1)
                 1 -> tab.setText(R.string.tab_text_2)
             }
         }

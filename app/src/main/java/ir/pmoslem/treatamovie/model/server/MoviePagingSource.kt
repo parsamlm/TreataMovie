@@ -14,7 +14,8 @@ import java.io.IOException
 
 private const val MOVIE_STARTING_PAGE_INDEX = 1
 
-class MoviePagingSource constructor(private val api: ApiService, private val movieDao: MovieDao): PagingSource<Int, Movie>() {
+class MoviePagingSource constructor(private val api: ApiService, private val movieDao: MovieDao) :
+    PagingSource<Int, Movie>() {
 
     override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
         return state.anchorPosition?.let {
@@ -45,15 +46,16 @@ class MoviePagingSource constructor(private val api: ApiService, private val mov
 
             LoadResult.Page(
                 data = movieList,
-                prevKey = if(position == MOVIE_STARTING_PAGE_INDEX) null else position - 1,
-                nextKey = if(movieList.isEmpty()) null else position + 1
-            ).also { GlobalScope.launch(Dispatchers.IO) {
-                movieDao.insertMoviesData(movieList)
+                prevKey = if (position == MOVIE_STARTING_PAGE_INDEX) null else position - 1,
+                nextKey = if (movieList.isEmpty()) null else position + 1
+            ).also {
+                GlobalScope.launch(Dispatchers.IO) {
+                    movieDao.insertMoviesData(movieList)
                 }
             }
-        }catch (e: IOException){
+        } catch (e: IOException) {
             LoadResult.Error(e)
-        }catch (e: HttpException){
+        } catch (e: HttpException) {
             LoadResult.Error(e)
         }
     }

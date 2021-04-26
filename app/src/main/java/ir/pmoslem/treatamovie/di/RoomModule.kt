@@ -9,6 +9,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ir.pmoslem.treatamovie.model.db.AppDatabase
 import ir.pmoslem.treatamovie.model.db.MovieDao
+import ir.pmoslem.treatamovie.model.db.MovieDetailsDao
 import javax.inject.Singleton
 
 @Module
@@ -24,5 +25,10 @@ object RoomModule {
     @Singleton
     @Provides
     fun provideMoviesDao(appDatabase: AppDatabase): MovieDao = appDatabase.getMovieDao()
+
+    @Singleton
+    @Provides
+    fun provideMovieDetailsDao(appDatabase: AppDatabase): MovieDetailsDao =
+        appDatabase.getMovieDetailsDao()
 
 }

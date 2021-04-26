@@ -14,13 +14,12 @@ import ir.pmoslem.treatamovie.model.db.Movie
 private lateinit var favoriteItemChangeListener: ItemChangeListener
 
 class FavoriteMoviesAdapter : RecyclerView.Adapter<FavoriteMoviesAdapter.MovieViewHolder>() {
-    private lateinit var  movies: List<Movie>
+    private lateinit var movies: List<Movie>
 
-    fun setMovies(itemChangeListener: ItemChangeListener, movieList: List<Movie>){
+    fun setMovies(itemChangeListener: ItemChangeListener, movieList: List<Movie>) {
         movies = movieList
         favoriteItemChangeListener = itemChangeListener
     }
-
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
@@ -38,14 +37,14 @@ class FavoriteMoviesAdapter : RecyclerView.Adapter<FavoriteMoviesAdapter.MovieVi
     }
 
 
-    class MovieViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+    class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val thumbIv: ImageView = itemView.findViewById(R.id.iv_thumbPic_item)
         private val title: TextView = itemView.findViewById(R.id.tv_title_item)
         private val type: TextView = itemView.findViewById(R.id.tv_type_item)
         private val favoriteIv: ImageView = itemView.findViewById(R.id.animation_favorite_item)
         private val moreDetailBtn: MaterialButton = itemView.findViewById(R.id.btn_moreDetails_item)
 
-        fun bind(movie: Movie){
+        fun bind(movie: Movie) {
             title.text = movie.title
             type.text = if (movie.zoneId == 3) "نوع فیلم: سریال" else "نوع فیلم: سینمایی"
             thumbIv.load(movie.thumbImgLink)
@@ -55,7 +54,7 @@ class FavoriteMoviesAdapter : RecyclerView.Adapter<FavoriteMoviesAdapter.MovieVi
                 favoriteItemChangeListener.onFavoriteButtonClicked(movie)
             }
 
-            moreDetailBtn.setOnClickListener{
+            moreDetailBtn.setOnClickListener {
                 favoriteItemChangeListener.onDetailsButtonClicked(movie)
             }
 

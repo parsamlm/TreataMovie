@@ -12,17 +12,19 @@ import ir.pmoslem.treatamovie.model.repository.ContentRepository
 import javax.inject.Inject
 
 @HiltViewModel
-class PageViewModel @Inject constructor(private val contentRepository: ContentRepository)  : ViewModel() {
+class ContentFavoriteViewModel @Inject constructor(private val contentRepository: ContentRepository) :
+    ViewModel() {
 
     private val _index = MutableLiveData<Int>()
 
-    fun getContentListFromServer(): LiveData<PagingData<Movie>>{
+    fun getContentListFromServer(): LiveData<PagingData<Movie>> {
         return contentRepository.getContentListFromServer().cachedIn(viewModelScope)
     }
 
-    fun getFavoriteContentListFromDatabase():LiveData<List<Movie>> = contentRepository.getFavoriteContentListFromDatabase()
+    fun getFavoriteContentListFromDatabase(): LiveData<List<Movie>> =
+        contentRepository.getFavoriteContentListFromDatabase()
 
-    fun getProgressBarStatus():LiveData<Boolean> = contentRepository.getProgressBarStatus()
+    fun getProgressBarStatus(): LiveData<Boolean> = contentRepository.getProgressBarStatus()
 
     fun onFavoriteButtonClicked(movie: Movie) = contentRepository.onFavoriteButtonClicked(movie)
 

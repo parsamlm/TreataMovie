@@ -18,7 +18,7 @@
         android:id="@+id/detailsFragment"
         android:name="ir.pmoslem.treatamovie.view.details.DetailsFragment"
         android:label="details_fragment"
-        tools:layout="@layout/details_fragment" >
+        tools:layout="@layout/details_fragment">
         <argument
             android:name="movie"
             app:argType="ir.pmoslem.treatamovie.model.db.Movie" />

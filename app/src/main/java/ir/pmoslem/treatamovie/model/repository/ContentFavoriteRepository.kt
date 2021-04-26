@@ -16,7 +16,10 @@ import javax.inject.Inject
 
 private val progressBarStatus: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
 
-class ContentRepository @Inject constructor(private val api: ApiService, private val movieDao: MovieDao){
+class ContentRepository @Inject constructor(
+    private val api: ApiService,
+    private val movieDao: MovieDao
+) {
 
     init {
         progressBarStatus.postValue(true)
@@ -43,10 +46,6 @@ class ContentRepository @Inject constructor(private val api: ApiService, private
             movieDao.setFavoriteMovie(movie)
         }
     }
-
-
-
-
 
 
 }

@@ -5,8 +5,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import ir.pmoslem.treatamovie.model.server.ApiService
-import okhttp3.OkHttpClient
-import okhttp3.Request
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -16,26 +14,12 @@ import javax.inject.Singleton
 object RetrofitModule {
     private const val BASE_URL = "https://treata.sitenevis.com/api/v1/test/"
 
-
     @Singleton
     @Provides
-    fun provideOkHttpClient(): OkHttpClient{
-        return OkHttpClient.Builder()
-            .addInterceptor{chain ->
-                val oldRequest: Request = chain.request()
-                val newRequestBuilder: Request.Builder = oldRequest.newBuilder()
-                newRequestBuilder.addHeader("Content-Type", "application/json")
-                chain.proceed(newRequestBuilder.build())
-            }.build()
-    }
-
-    @Singleton
-    @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit{
+    fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient)
             .build()
     }
 
