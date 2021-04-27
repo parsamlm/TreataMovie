@@ -15,4 +15,6 @@
 
     <color name="tabTextColor">#80FFFFFF</color>
     <color name="tabSelectedTextColor">#FFFFFF</color>
+
+    <color name="orange_500">#F44336</color>
 </resources>

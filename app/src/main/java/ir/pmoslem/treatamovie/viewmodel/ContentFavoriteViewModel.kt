@@ -8,29 +8,28 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.pmoslem.treatamovie.model.db.Movie
-import ir.pmoslem.treatamovie.model.repository.ContentRepository
+import ir.pmoslem.treatamovie.model.repository.ContentFavoriteRepository
 import javax.inject.Inject
 
 @HiltViewModel
-class ContentFavoriteViewModel @Inject constructor(private val contentRepository: ContentRepository) :
-    ViewModel() {
+class ContentFavoriteViewModel @Inject constructor(
+    private val contentFavoriteRepository: ContentFavoriteRepository
+    ) : ViewModel() {
 
-    private val _index = MutableLiveData<Int>()
+    private val pageIndex = MutableLiveData<Int>()
 
-    fun getContentListFromServer(): LiveData<PagingData<Movie>> {
-        return contentRepository.getContentListFromServer().cachedIn(viewModelScope)
+    fun getMoviesFromServer(): LiveData<PagingData<Movie>> {
+        return contentFavoriteRepository.getMoviesFromServer().cachedIn(viewModelScope)
     }
 
-    fun getFavoriteContentListFromDatabase(): LiveData<List<Movie>> =
-        contentRepository.getFavoriteContentListFromDatabase()
+    fun getFavoriteMoviesFromDatabase(): LiveData<List<Movie>> =
+        contentFavoriteRepository.getFavoriteMoviesFromDatabase()
 
-    fun getProgressBarStatus(): LiveData<Boolean> = contentRepository.getProgressBarStatus()
+    fun onFavoriteButtonClicked(movie: Movie) = contentFavoriteRepository.onFavoriteButtonClicked(movie)
 
-    fun onFavoriteButtonClicked(movie: Movie) = contentRepository.onFavoriteButtonClicked(movie)
-
-    fun setIndex(index: Int) {
-        _index.value = index
+    fun setPageIndex(index: Int) {
+        pageIndex.value = index
     }
 
-    fun getPageNumber(): LiveData<Int> = _index
+    fun getPageIndex(): LiveData<Int> = pageIndex
 }

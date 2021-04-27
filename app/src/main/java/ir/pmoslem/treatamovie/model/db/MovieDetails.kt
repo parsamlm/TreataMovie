@@ -23,7 +23,6 @@ data class MovieDetails(
     var favoriteStatus: Boolean
 )
 
-
 data class MovieDetailsObject(
     @SerializedName("Result")
     val movieDetails: MovieDetails

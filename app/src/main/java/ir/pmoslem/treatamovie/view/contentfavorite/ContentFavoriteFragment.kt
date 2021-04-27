@@ -5,8 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,26 +15,22 @@ import ir.pmoslem.treatamovie.model.db.Movie
 import ir.pmoslem.treatamovie.view.main.MainFragmentDirections
 import ir.pmoslem.treatamovie.viewmodel.ContentFavoriteViewModel
 
+private const val CONTENT_PAGE_INDEX = 0
 private const val FAVORITE_PAGE_INDEX = 1
 
 @AndroidEntryPoint
-class PlaceholderFragment : Fragment(), ItemChangeListener {
+class ContentFavoriteFragment : Fragment(), ItemChangeListener {
 
-    private lateinit var contentFavoriteViewModel: ContentFavoriteViewModel
     private lateinit var viewBinding: FragmentContentFavoriteBinding
-
     private lateinit var contentMoviesAdapter: ContentMoviesAdapter
     private lateinit var favoriteMoviesAdapter: FavoriteMoviesAdapter
     private lateinit var favoriteMovieList: List<Movie>
-    private lateinit var fragmentTransaction: FragmentTransaction
 
+    private val viewModel: ContentFavoriteViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        contentFavoriteViewModel =
-            ViewModelProvider(this).get(ContentFavoriteViewModel::class.java).apply {
-                setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1)
-            }
+        viewModel.apply { setPageIndex(arguments?.getInt(PAGE_INDEX) ?: 1) }
     }
 
     override fun onCreateView(
@@ -44,32 +39,24 @@ class PlaceholderFragment : Fragment(), ItemChangeListener {
         savedInstanceState: Bundle?
     ): View {
         viewBinding = FragmentContentFavoriteBinding.inflate(inflater, container, false)
-
-        fragmentTransaction = childFragmentManager.beginTransaction()
-
         val root = viewBinding.root
+
+        // Content & Favorite page adapter defining
         contentMoviesAdapter = ContentMoviesAdapter(this)
         favoriteMoviesAdapter = FavoriteMoviesAdapter()
 
         viewBinding.rvMain.layoutManager =
             LinearLayoutManager(root.context, RecyclerView.VERTICAL, false)
 
-
-
-        contentFavoriteViewModel.getProgressBarStatus().observe(requireActivity(),
-            { visibility ->
-                if (visibility!!) {
-                    viewBinding.pbLoadMain.visibility = View.VISIBLE
-                    viewBinding.rvMain.visibility = View.GONE
-                } else {
-                    viewBinding.pbLoadMain.visibility = View.GONE
-                    viewBinding.rvMain.visibility = View.VISIBLE
+        viewModel.getPageIndex().observe(viewLifecycleOwner, { num ->
+            if (num == CONTENT_PAGE_INDEX) { // Observe adapter items for content page
+                viewModel.getMoviesFromServer().observe(viewLifecycleOwner) {
+                    contentMoviesAdapter.submitData(viewLifecycleOwner.lifecycle, it)
+                    viewBinding.rvMain.adapter = contentMoviesAdapter
                 }
-            })
 
-        contentFavoriteViewModel.getPageNumber().observe(viewLifecycleOwner, { num ->
-            if (num == FAVORITE_PAGE_INDEX) {
-                contentFavoriteViewModel.getFavoriteContentListFromDatabase()
+            } else if (num == FAVORITE_PAGE_INDEX) { // Observe adapter items for favorite page
+                viewModel.getFavoriteMoviesFromDatabase()
                     .observe(requireActivity(),
                         { moviesList ->
                             if (moviesList != null) {
@@ -78,49 +65,34 @@ class PlaceholderFragment : Fragment(), ItemChangeListener {
                                 viewBinding.rvMain.adapter = favoriteMoviesAdapter
                             }
                         })
-
-            } else {
-                contentFavoriteViewModel.getContentListFromServer().observe(viewLifecycleOwner) {
-                    //val data = it.flatMap { movie -> Iterable {  } }  }
-                    //contentMoviesAdapter.submitData(viewLifecycleOwner.lifecycle, data)
-                    contentMoviesAdapter.submitData(viewLifecycleOwner.lifecycle, it)
-                    viewBinding.rvMain.adapter = contentMoviesAdapter
-                }
             }
         })
-
-
-
-
 
         return root
     }
 
 
     companion object {
-        private const val ARG_SECTION_NUMBER = "section_number"
+        private const val PAGE_INDEX = "page_number"
 
         @JvmStatic
-        fun newInstance(sectionNumber: Int): PlaceholderFragment {
-            return PlaceholderFragment().apply {
+        fun newInstance(sectionNumber: Int): ContentFavoriteFragment {
+            return ContentFavoriteFragment().apply {
                 arguments = Bundle().apply {
-                    putInt(ARG_SECTION_NUMBER, sectionNumber)
+                    putInt(PAGE_INDEX, sectionNumber)
                 }
             }
         }
     }
 
-    override fun onFavoriteButtonClicked(movie: Movie) {
-        contentFavoriteViewModel.onFavoriteButtonClicked(movie)
 
-
+    override fun onFavoriteButtonClicked(movie: Movie) { // Favorite Button logic implementation
+        viewModel.onFavoriteButtonClicked(movie)
     }
 
-    override fun onDetailsButtonClicked(movie: Movie) {
+    override fun onDetailsButtonClicked(movie: Movie) { // Details Button logic implementation
         findNavController().navigate(
-            MainFragmentDirections.actionMainFragmentToDetailsFragment(
-                movie
-            )
+            MainFragmentDirections.actionMainFragmentToDetailsFragment(movie)
         )
     }
 

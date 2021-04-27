@@ -7,7 +7,7 @@ import dagger.hilt.components.SingletonComponent
 import ir.pmoslem.treatamovie.model.server.ApiService
 import ir.pmoslem.treatamovie.model.db.MovieDao
 import ir.pmoslem.treatamovie.model.db.MovieDetailsDao
-import ir.pmoslem.treatamovie.model.repository.ContentRepository
+import ir.pmoslem.treatamovie.model.repository.ContentFavoriteRepository
 import ir.pmoslem.treatamovie.model.repository.DetailsRepository
 import javax.inject.Singleton
 
@@ -17,8 +17,8 @@ object RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideContentRepository(api: ApiService, movieDao: MovieDao): ContentRepository =
-        ContentRepository(api, movieDao)
+    fun provideContentFavoriteRepository(api: ApiService, movieDao: MovieDao): ContentFavoriteRepository =
+        ContentFavoriteRepository(api, movieDao)
 
 
     @Singleton

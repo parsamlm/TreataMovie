@@ -4,15 +4,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
+private const val CONTENT_FAVORITE_PAGE_COUNT = 2
 
-class SectionsPagerAdapter(fragmentActivity: FragmentActivity) :
+class ContentFavoritePagerAdapter(fragmentActivity: FragmentActivity) :
     FragmentStateAdapter(fragmentActivity) {
     override fun getItemCount(): Int {
-        return 2
+        return CONTENT_FAVORITE_PAGE_COUNT
     }
 
     override fun createFragment(position: Int): Fragment {
-        return PlaceholderFragment.newInstance(position)
+        return ContentFavoriteFragment.newInstance(position)
     }
 
 

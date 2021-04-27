@@ -14,7 +14,7 @@ import java.io.IOException
 
 private const val MOVIE_STARTING_PAGE_INDEX = 1
 
-class MoviePagingSource constructor(private val api: ApiService, private val movieDao: MovieDao) :
+class MovieRemoteMediator constructor(private val api: ApiService, private val movieDao: MovieDao) :
     PagingSource<Int, Movie>() {
 
     override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
@@ -53,6 +53,7 @@ class MoviePagingSource constructor(private val api: ApiService, private val mov
                     movieDao.insertMoviesData(movieList)
                 }
             }
+
         } catch (e: IOException) {
             LoadResult.Error(e)
         } catch (e: HttpException) {

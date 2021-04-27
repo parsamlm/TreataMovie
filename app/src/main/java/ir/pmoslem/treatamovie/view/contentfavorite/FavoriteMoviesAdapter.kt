@@ -11,20 +11,24 @@ import com.google.android.material.button.MaterialButton
 import ir.pmoslem.treatamovie.R
 import ir.pmoslem.treatamovie.model.db.Movie
 
-private lateinit var favoriteItemChangeListener: ItemChangeListener
+private lateinit var favoriteItemListener: ItemChangeListener
 
 class FavoriteMoviesAdapter : RecyclerView.Adapter<FavoriteMoviesAdapter.MovieViewHolder>() {
     private lateinit var movies: List<Movie>
 
     fun setMovies(itemChangeListener: ItemChangeListener, movieList: List<Movie>) {
         movies = movieList
-        favoriteItemChangeListener = itemChangeListener
+        favoriteItemListener = itemChangeListener
     }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         return MovieViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
+            LayoutInflater.from(parent.context).inflate(
+                R.layout.item_movie,
+                parent,
+                false
+            )
         )
     }
 
@@ -36,8 +40,8 @@ class FavoriteMoviesAdapter : RecyclerView.Adapter<FavoriteMoviesAdapter.MovieVi
         return movies.size
     }
 
-
     class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
         private val thumbIv: ImageView = itemView.findViewById(R.id.iv_thumbPic_item)
         private val title: TextView = itemView.findViewById(R.id.tv_title_item)
         private val type: TextView = itemView.findViewById(R.id.tv_type_item)
@@ -46,21 +50,24 @@ class FavoriteMoviesAdapter : RecyclerView.Adapter<FavoriteMoviesAdapter.MovieVi
 
         fun bind(movie: Movie) {
             title.text = movie.title
+
             type.text = if (movie.zoneId == 3) "نوع فیلم: سریال" else "نوع فیلم: سینمایی"
+
             thumbIv.load(movie.thumbImgLink)
+
             if (movie.favoriteStatus) favoriteIv.setImageResource(R.drawable.ic_round_favorite_24)
             else favoriteIv.setImageResource(R.drawable.ic_round_favorite_border_24)
+
             favoriteIv.setOnClickListener {
-                favoriteItemChangeListener.onFavoriteButtonClicked(movie)
+                favoriteItemListener.onFavoriteButtonClicked(movie)
             }
 
             moreDetailBtn.setOnClickListener {
-                favoriteItemChangeListener.onDetailsButtonClicked(movie)
+                favoriteItemListener.onDetailsButtonClicked(movie)
             }
 
         }
 
     }
-
 
 }

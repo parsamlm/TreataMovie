@@ -6,28 +6,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import ir.pmoslem.treatamovie.R
-import ir.pmoslem.treatamovie.view.contentfavorite.SectionsPagerAdapter
+import ir.pmoslem.treatamovie.databinding.FragmentMainBinding
+import ir.pmoslem.treatamovie.view.contentfavorite.ContentFavoritePagerAdapter
+
+private const val CURRENT_PAGE_NUMBER = 0
 
 @AndroidEntryPoint
 class MainFragment : Fragment() {
+    private lateinit var viewBinding: FragmentMainBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val root = inflater.inflate(R.layout.fragment_main, container, false)
+    ): View {
+        viewBinding = FragmentMainBinding.inflate(inflater, container, false)
+        val root = viewBinding.root
 
-        val sectionsPagerAdapter = SectionsPagerAdapter(requireActivity())
-        val viewPager2: ViewPager2 = root.findViewById(R.id.view_pager)
-        viewPager2.adapter = sectionsPagerAdapter
-        viewPager2.orientation = ViewPager2.ORIENTATION_HORIZONTAL
-        viewPager2.currentItem = 0
-        val tabs: TabLayout = root.findViewById(R.id.tabs)
-        val tabLayoutMediator = TabLayoutMediator(tabs, viewPager2) { tab, position ->
+        val contentFavoritePagerAdapter = ContentFavoritePagerAdapter(requireActivity())
+
+        viewBinding.viewPager2Main.adapter = contentFavoritePagerAdapter
+        viewBinding.viewPager2Main.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+        viewBinding.viewPager2Main.currentItem = CURRENT_PAGE_NUMBER
+
+        val tabLayoutMediator = TabLayoutMediator(viewBinding.tabsMain, viewBinding.viewPager2Main) { tab, position ->
             when (position) {
                 0 -> tab.setText(R.string.tab_text_1)
                 1 -> tab.setText(R.string.tab_text_2)
@@ -37,6 +41,5 @@ class MainFragment : Fragment() {
 
         return root
     }
-
 
 }

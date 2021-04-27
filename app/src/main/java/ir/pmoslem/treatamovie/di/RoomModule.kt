@@ -21,7 +21,6 @@ object RoomModule {
     fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase =
         Room.databaseBuilder(context, AppDatabase::class.java, "db_movies").build()
 
-
     @Singleton
     @Provides
     fun provideMoviesDao(appDatabase: AppDatabase): MovieDao = appDatabase.getMovieDao()

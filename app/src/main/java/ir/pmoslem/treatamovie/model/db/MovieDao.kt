@@ -10,7 +10,10 @@ interface MovieDao {
     fun insertMoviesData(moviesList: List<Movie>)
 
     @Query("SELECT * FROM movies WHERE favoriteStatus = 1")
-    fun getFavoriteMovies(): LiveData<List<Movie>>
+    fun getFavoriteMoviesLiveData(): LiveData<List<Movie>>
+
+    @Query("SELECT * FROM movies WHERE favoriteStatus = 1")
+    suspend fun getFavoriteMovies(): List<Movie>
 
     @Update
     suspend fun setFavoriteMovie(movie: Movie)

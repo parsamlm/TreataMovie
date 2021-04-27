@@ -17,5 +17,4 @@ interface ApiService {
     @POST("GetContent")
     suspend fun getContentDetail(@Body body: JsonObject): MovieDetailsObject
 
-
 }
